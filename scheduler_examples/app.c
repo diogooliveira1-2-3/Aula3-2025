@@ -10,6 +10,18 @@
 #include "debug.h"
 
 #include "msg.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <fcntl.h>
+#include <limits.h>
+#include <unistd.h>
+#include <sys/errno.h>
+
+#include "debug.h"
+
+#include "msg.h"
 
 /*
  * Run like: ./app <name> <time_s>
