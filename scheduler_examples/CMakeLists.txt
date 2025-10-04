@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(scheduler ossim.c queue.c fifo.c sjf.c
         RR.c
+        MLFQ.c
 )
 
 add_executable(app app.c)
