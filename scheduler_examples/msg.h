@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <sys/types.h>
+#include <stdint.h>
 
 #define SOCKET_PATH "/tmp/scheduler.sock"
 

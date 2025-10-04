@@ -1,6 +1,7 @@
 #ifndef MLFQ_H
 #define MLFQ_H
 
+#include <stdint.h>     // ← necessário porque usas uint32_t
 #include "queue.h"
 
 #define MLFQ_NUM_QUEUES 3
@@ -10,6 +11,10 @@ typedef struct {
     queue_t queues[MLFQ_NUM_QUEUES];
 } mlfq_t;
 
-void mlfq_scheduler(uint32_t current_time_ms, mlfq_t *mlfq, pcb_t **cpu_task);
+void mlfq_init(mlfq_t *mlfq);
+void mlfq_add_task(mlfq_t *mlfq, pcb_t *task);
 
-#endif //MLFQ_H
+// ← ATUALIZA A ASSINATURA (agora com command_queue)
+void mlfq_scheduler(uint32_t current_time_ms, mlfq_t *mlfq, pcb_t **cpu_task, queue_t *command_queue);
+
+#endif // MLFQ_H

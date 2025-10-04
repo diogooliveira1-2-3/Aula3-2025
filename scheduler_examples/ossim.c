@@ -238,6 +238,7 @@ void check_blocked_queue(queue_t * blocked_queue, queue_t * command_queue, uint3
 
 static const char *SCHEDULER_NAMES[] = {
     "FIFO",
+
     "SJF",
     "RR",
     "MLFQ",
@@ -288,6 +289,9 @@ int main(int argc, char *argv[]) {
     // We only have a single CPU that is a pointer to the actively running PCB on the CPU
     pcb_t *CPU = NULL;
 
+    mlfq_t mlfq;
+    mlfq_init(&mlfq);
+
     int server_fd = setup_server_socket(SOCKET_PATH);
     if (server_fd < 0) {
         fprintf(stderr, "Failed to set up server socket\n");
@@ -318,7 +322,11 @@ int main(int argc, char *argv[]) {
             case SCHED_RR:
                 rr_scheduler(current_time_ms, &ready_queue, &CPU);
             case SCHED_MLFQ:
-                mlfq_scheduler(current_time_ms, &ready_queue, &CPU);
+                pcb_t *p;
+                while ((p = dequeue_pcb(&ready_queue)) != NULL) {
+                    mlfq_add_task(&mlfq, p);
+                }
+                mlfq_scheduler(current_time_ms, &mlfq, &CPU, &command_queue);
                 break;
             default:
                 printf("Unknown scheduler type\n");
